@@ -1,61 +1,51 @@
 <script>
-	export let showModal; // boolean
-
-	let dialog; // HTMLDialogElement
-
-	$: if (dialog && showModal) dialog.showModal();
+	let shown = false;
+	export function show() {
+		shown = true;
+	}
+	export function hide() {
+		shown = false;
+	}
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog
-	bind:this={dialog}
-	on:close={() => (showModal = false)}
-	on:click|self={() => dialog.close()}
->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div on:click|stopPropagation>
-		<slot />
-		<!-- svelte-ignore a11y-autofocus -->
-		<button type="button" autofocus on:click={() => dialog.close()}>close modal</button>
+<svelte:window
+	on:keydown={(e) => {
+		if (e.keyCode == 27) {
+			hide();
+		}
+	}}
+/>
+
+{#if shown}
+	<div class="modal-wrap">
+		<div class="modal">
+			<span class="close" on:click={() => hide()}>&times;</span>
+			<slot />
+		</div>
 	</div>
-</dialog>
+{/if}
 
 <style>
-	dialog {
-		max-width: 32em;
-		border-radius: 0.2em;
-		border: none;
-		padding: 0;
+	.modal-wrap {
+		background-color: rgb(0, 0, 0);
+		background-color: rgba(0, 0, 0, 0.6);
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
 	}
-	dialog::backdrop {
-		background: rgba(0, 0, 0, 0.3);
+	.modal {
+		background-color: white;
+		max-width: 50vw;
+		padding: 1rem;
+		margin: 15% auto;
 	}
-	dialog > div {
-		padding: 1em;
+	.close {
+		float: right;
+		cursor: pointer;
 	}
-	dialog[open] {
-		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-	}
-	@keyframes zoom {
-		from {
-			transform: scale(0.95);
-		}
-		to {
-			transform: scale(1);
-		}
-	}
-	dialog[open]::backdrop {
-		animation: fade 0.2s ease-out;
-	}
-	@keyframes fade {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-	button {
-		display: block;
+	.close:hover {
+		font-weight: bold;
 	}
 </style>

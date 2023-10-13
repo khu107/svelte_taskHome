@@ -3,50 +3,36 @@
 </script>
 
 <script>
+	const urlParams = new URLSearchParams(window.location.search);
+	const id = urlParams.get('id');
+
+	import { boards } from '../../lib/store/index.js';
 	import logo from '$lib/icons/keyboard_backspace.svg';
 	import plus from '$lib/icons/math-plus.svg';
 	import minus from '$lib/icons/math-minus.svg';
 	import close from '$lib/icons/close.svg';
-	import { boards } from '../../lib/store/index.js';
-	import Modal from '../../components/modal/Modal.svelte';
 	import event_available from '../../lib/icons/event_available.svg';
-	import Datepickr from '../../components/flatpickr/Datepickr.svelte';
-	let selectedDate;
-	let value;
-	console.log(value);
-	let options = {
-		// Your options for Flatpickr
-		altInput: true,
-		altFormat: 'F j',
-		dateFormat: 'Y-m-d'
-	};
-	function handleDateSelect(date) {
-		selectedDate = date;
-	}
-	let modal;
-	let guests = 1;
-	let name = '';
-	let phone = '';
-	let text = '';
 
-	function congratulate(event) {
+	// const item = $boards.filter((item) => item.id === +id)[0];
+	let item = $boards.find((item) => item.id === id);
+
+	let name = item.name;
+	let guests = item.guests;
+	let phone = item.phone;
+	let text = item.text;
+	let value = item.value;
+
+	const onEdit = (event) => {
 		event.preventDefault();
-		let add = {
+		boards.edit(id, {
 			name,
-			phone,
 			text,
+			phone,
 			guests,
 			value
-		};
-		console.log(add);
-		boards.add(add);
-		name = '';
-		phone = '';
-		text = '';
-		guests = 1;
+		});
 		goto('/');
-	}
-
+	};
 	function up() {
 		guests += 1;
 	}
@@ -61,25 +47,20 @@
 	<!-- head -->
 	<div class="head">
 		<a href="/"><img src={logo} alt="logo" /></a>
-		<h1>New Reservation</h1>
+		<h1>Edit Reservation</h1>
 		<div>
 			<img src={close} alt="close" />
 		</div>
 	</div>
 	<!-- section -->
 
-	<form class="section" on:submit={congratulate}>
-		<a href="/selectDate">aa</a>
+	<form class="section">
 		<div class="info">
-			<input type="text" bind:value={name} placeholder="Name" />
-			<input type="text" bind:value={phone} placeholder="Phone" />
-			<button class="modal" type="button" on:click={() => modal.show()}>
-				<img src={event_available} alt="" />Select Date
+			<input id="name" bind:value={name} type="text" placeholder="Name" />
+			<input id="phone" bind:value={phone} type="text" placeholder="Phone" />
+			<button class="modal" type="button">
+				<img src={event_available} alt="event_available" />{value}
 			</button>
-			<Modal bind:this={modal}>
-				<Datepickr {options} bind:value onDateSelect={handleDateSelect} />
-				<button type="button" on:click={() => modal.hide()}>Save</button>
-			</Modal>
 		</div>
 		<!-- guests -->
 		<div>
@@ -94,9 +75,9 @@
 				</button>
 			</div>
 
-			<textarea bind:value={text} cols="30" rows="10" placeholder="Add Note..." />
+			<textarea cols="30" rows="10" bind:value={text} placeholder="Add Note..." />
 
-			<button class="saveBtn" type="submit"> Save </button>
+			<button on:click={onEdit} class="saveBtn" type="submit"> Save </button>
 		</div>
 	</form>
 </main>

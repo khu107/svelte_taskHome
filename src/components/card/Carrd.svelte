@@ -1,17 +1,31 @@
 <script>
 	export let item;
+	let dateValue = item.value ? item.value.toString().slice(4, 10) : '';
 	import { boards } from '../../lib/store/index.js';
 	import phone from '../../lib/icons/phone.svg';
 	import event_available from '../../lib/icons/event_available.svg';
 	import group from '../../lib/icons/group.svg';
 	import edit from '../../lib/icons/edit.svg';
 	import trash from '../../lib/icons/trash.svg';
+	import { goto } from '$app/navigation';
+
 	const handleDelete = () => {
-		boards.remove(item.id);
+		boards.remove(item.id.toString());
+	};
+
+	const handleEdit = () => {
+		goto(`/editPage?id=${item.id}`);
+	};
+	const handleEditKeyPress = (event) => {
+		event.preventDefault();
+
+		if (event.key === 'Enter') {
+			handleEdit();
+		}
 	};
 </script>
 
-<div class="card">
+<div class="card" on:click={handleEdit} on:keydown={handleEditKeyPress} tabindex="0" role="button">
 	<!-- name -->
 	<div class="name">
 		<h3>{item.name}</h3>
@@ -25,7 +39,7 @@
 		<div>
 			<img src={event_available} alt="event_available" />
 		</div>
-		<div>today,</div>
+		<div>{dateValue},</div>
 		<div>2:00 PM</div>
 	</div>
 	<div class="guests">
@@ -37,9 +51,9 @@
 	<div class="table">
 		<div>Reserved Table 7 Floor 1</div>
 	</div>
-	<div class="text">
+	<div style="height: 50px" class="text">
 		<div>{item.text ? item.text : ''}</div>
-		<img src={edit} alt="edit" />
+		<img style={`display: ${item.text ? 'block' : 'none'}`} src={edit} alt="edit" />
 	</div>
 	<div class="Btn">
 		<button on:click={handleDelete}><img src={trash} alt="trash" /></button>

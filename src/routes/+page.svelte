@@ -8,7 +8,7 @@
 	<a href="/addPage">+ New Reservation</a>
 	<h1>Reservation</h1>
 	<div>
-		<img src={close} alt="" />
+		<img src={close} alt="close" />
 	</div>
 </header>
 <div class="card">
