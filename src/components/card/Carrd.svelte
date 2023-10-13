@@ -1,0 +1,118 @@
+<script>
+	export let item;
+	import { boards } from '../../lib/store/index.js';
+	import phone from '../../lib/icons/phone.svg';
+	import event_available from '../../lib/icons/event_available.svg';
+	import group from '../../lib/icons/group.svg';
+	import edit from '../../lib/icons/edit.svg';
+	import trash from '../../lib/icons/trash.svg';
+	const handleDelete = () => {
+		boards.remove(item.id);
+	};
+</script>
+
+<div class="card">
+	<!-- name -->
+	<div class="name">
+		<h3>{item.name}</h3>
+		<div class="name_phone">
+			<img src={phone} alt="" />
+			<div>{item.phone}</div>
+		</div>
+	</div>
+	<!-- date -->
+	<div class="date">
+		<div>
+			<img src={event_available} alt="event_available" />
+		</div>
+		<div>today,</div>
+		<div>2:00 PM</div>
+	</div>
+	<div class="guests">
+		<div>
+			<img src={group} alt="group" />
+		</div>
+		<div>{item.guests}</div>
+	</div>
+	<div class="table">
+		<div>Reserved Table 7 Floor 1</div>
+	</div>
+	<div class="text">
+		<div>{item.text ? item.text : ''}</div>
+		<img src={edit} alt="edit" />
+	</div>
+	<div class="Btn">
+		<button on:click={handleDelete}><img src={trash} alt="trash" /></button>
+		<button>Seated</button>
+	</div>
+</div>
+
+<style>
+	.Btn {
+		margin-top: 25px;
+		display: flex;
+		gap: 25px;
+	}
+	button {
+		padding: 0px 10px;
+		border: none;
+		color: white;
+		background-color: white;
+		border-radius: 10px;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+			rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+	}
+	.Btn button:last-child {
+		font-size: 16px;
+		width: 100%;
+		padding: 18px;
+		background-color: rgb(188, 63, 63);
+	}
+
+	.text {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		margin-top: 15px;
+	}
+	.table {
+		margin-top: 10px;
+	}
+	.guests {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		margin-top: 15px;
+	}
+	.date {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		margin-top: 15px;
+	}
+	.name_phone {
+		display: flex;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+			rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+		padding: 15px 15px;
+		border-radius: 20px;
+		gap: 6px;
+	}
+
+	.name {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+	}
+	h3 {
+		margin: 0;
+	}
+
+	.card {
+		padding: 20px;
+		width: 280px;
+		background-color: white;
+		height: 300px;
+		border-radius: 15px;
+	}
+</style>
