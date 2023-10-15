@@ -1,6 +1,6 @@
 <script>
 	import { boards } from '../lib/store/index.js';
-	import Carrd from '../components/card/Carrd.svelte';
+	import Card from '../components/card/Card.svelte';
 	import close from '../lib/icons/close.svg';
 </script>
 
@@ -13,7 +13,7 @@
 </header>
 <div class="card">
 	{#each $boards as board (board.id)}
-		<Carrd item={board} />
+		<Card item={board} />
 	{/each}
 </div>
 

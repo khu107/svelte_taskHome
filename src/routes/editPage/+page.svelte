@@ -20,8 +20,7 @@
 	let guests = item.guests;
 	let phone = item.phone;
 	let text = item.text;
-	let value = item.value;
-
+	let value = item.value ? item.value.toString().slice(4, 10) : '';
 	const onEdit = (event) => {
 		event.preventDefault();
 		boards.edit(id, {

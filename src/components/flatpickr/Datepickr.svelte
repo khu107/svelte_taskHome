@@ -1,7 +1,7 @@
 <script>
 	import Flatpickr from 'svelte-flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
-
+	import today from '../../lib/icons/today.svg';
 	export let options;
 	export let value;
 	export let onDateSelect;
@@ -10,14 +10,20 @@
 		const selectedDate = selectedDates[0];
 		onDateSelect(selectedDate);
 	}
+	console.log(value);
 </script>
 
-<main>
-	<Flatpickr {options} bind:value on:change={handleDateSelect} />
-</main>
+<div class="wrap">
+	<img src={today} alt="" />
+	<Flatpickr style="padding: 20px !important" {options} bind:value on:change={handleDateSelect} />
+</div>
 
 <style>
-	main {
-		margin-top: 100px;
+	.wrap {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		margin-top: 10px;
+		margin-bottom: 20px;
 	}
 </style>

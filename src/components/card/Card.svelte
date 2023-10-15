@@ -23,6 +23,7 @@
 			handleEdit();
 		}
 	};
+	console.log(item);
 </script>
 
 <div class="card" on:click={handleEdit} on:keydown={handleEditKeyPress} tabindex="0" role="button">
@@ -40,7 +41,12 @@
 			<img src={event_available} alt="event_available" />
 		</div>
 		<div>{dateValue},</div>
-		<div>2:00 PM</div>
+		<div>
+			{item.time?.hours < 10 ? `0${item.time?.hours}` : item.time?.hours}:{item.time?.minutes < 10
+				? `0${item.time?.minutes}`
+				: item.time?.minutes}
+			{item.time?.period}
+		</div>
 	</div>
 	<div class="guests">
 		<div>

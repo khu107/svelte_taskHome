@@ -3,6 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
 		<style>
@@ -10,6 +18,22 @@
 				margin: 0;
 				padding: 0;
 				background: rgb(254, 241, 241);
+			}
+			body
+				> div:nth-child(1)
+				> main
+				> form
+				> div.info.s-XGiOhtXSTiW3
+				> div
+				> div
+				> div
+				> input.form-control.input {
+				width: 70% !important;
+				border: 2px solid black !important;
+				font-weight: bold !important;
+				padding-left: 20px !important;
+				padding: 15px !important;
+				border-radius: 10px !important;
 			}
 		</style>
 	</head>

@@ -19,7 +19,6 @@
 {#if shown}
 	<div class="modal-wrap">
 		<div class="modal">
-			<span class="close" on:click={() => hide()}>&times;</span>
 			<slot />
 		</div>
 	</div>
@@ -37,8 +36,9 @@
 	}
 	.modal {
 		background-color: white;
-		max-width: 50vw;
+		max-width: 25vw;
 		padding: 1rem;
+		border-radius: 20px;
 		margin: 15% auto;
 	}
 	.close {

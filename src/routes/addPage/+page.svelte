@@ -11,15 +11,20 @@
 	import Modal from '../../components/modal/Modal.svelte';
 	import event_available from '../../lib/icons/event_available.svg';
 	import Datepickr from '../../components/flatpickr/Datepickr.svelte';
+	import Time from '../../components/timeCicker/Time.svelte';
+	import trash from '../../lib/icons/trash.svg';
+
 	let selectedDate;
 	let value;
-	console.log(value);
 	let options = {
-		// Your options for Flatpickr
 		altInput: true,
 		altFormat: 'F j',
 		dateFormat: 'Y-m-d'
 	};
+	let time = { hours: 0, minutes: 0, period: 'AM' };
+	function handleTimeChange(event) {
+		time = event.detail;
+	}
 	function handleDateSelect(date) {
 		selectedDate = date;
 	}
@@ -36,7 +41,8 @@
 			phone,
 			text,
 			guests,
-			value
+			value,
+			time
 		};
 		console.log(add);
 		boards.add(add);
@@ -69,7 +75,6 @@
 	<!-- section -->
 
 	<form class="section" on:submit={congratulate}>
-		<a href="/selectDate">aa</a>
 		<div class="info">
 			<input type="text" bind:value={name} placeholder="Name" />
 			<input type="text" bind:value={phone} placeholder="Phone" />
@@ -77,8 +82,19 @@
 				<img src={event_available} alt="" />Select Date
 			</button>
 			<Modal bind:this={modal}>
-				<Datepickr {options} bind:value onDateSelect={handleDateSelect} />
-				<button type="button" on:click={() => modal.hide()}>Save</button>
+				<Datepickr style={'padding: 20px'} {options} bind:value onDateSelect={handleDateSelect} />
+				<Time
+					bind:hours={time.hours}
+					bind:minutes={time.minutes}
+					bind:period={time.period}
+					on:timeChanged={handleTimeChange}
+				/>
+				<div class="modalbtn">
+					<button class="modaldelete" type="button" on:click={() => modal.hide()}>
+						<img src={trash} alt="" />
+					</button>
+					<button class="modalsave" type="button" on:click={() => modal.hide()}>Save</button>
+				</div>
 			</Modal>
 		</div>
 		<!-- guests -->
@@ -102,6 +118,10 @@
 </main>
 
 <style>
+	.modalbtn {
+		display: flex;
+		gap: 10px;
+	}
 	.info {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -118,6 +138,30 @@
 		box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 		border: none;
 		border-radius: 10px;
+	}
+	.modalsave {
+		width: 75%;
+		margin-top: 20px;
+		height: 70px;
+		font-size: 22px;
+		color: white;
+		background-color: chocolate;
+		border: none;
+		outline: none;
+		border-radius: 15px;
+	}
+	.modaldelete {
+		width: 25%;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+			rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+		margin-top: 20px;
+		height: 70px;
+		font-size: 22px;
+		color: white;
+		background: transparent;
+		border: none;
+		outline: none;
+		border-radius: 15px;
 	}
 	.saveBtn {
 		width: 100%;
