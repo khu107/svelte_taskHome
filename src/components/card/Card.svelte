@@ -1,6 +1,6 @@
 <script>
 	export let item;
-	let dateValue = item.value ? item.value.toString().slice(4, 10) : '';
+	let dateValue = new Date(item.value).toLocaleString('en-US', { month: 'long', day: 'numeric' });
 	import { boards } from '../../lib/store/index.js';
 	import phone from '../../lib/icons/phone.svg';
 	import event_available from '../../lib/icons/event_available.svg';
@@ -11,6 +11,9 @@
 
 	const handleDelete = () => {
 		boards.remove(item.id.toString());
+		const storedData = JSON.parse(localStorage.getItem('users')) || [];
+		const updatedData = storedData.filter((board) => board.id !== item.id);
+		localStorage.setItem('users', JSON.stringify(updatedData));
 	};
 
 	const handleEdit = () => {
@@ -86,7 +89,7 @@
 		font-size: 16px;
 		width: 100%;
 		padding: 18px;
-		background-color: rgb(188, 63, 63);
+		background-color: chocolate;
 	}
 
 	.text {
@@ -117,6 +120,7 @@
 		padding: 15px 15px;
 		border-radius: 20px;
 		gap: 6px;
+		width: 130px;
 	}
 
 	.name {

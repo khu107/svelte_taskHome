@@ -7,20 +7,39 @@
 	const id = urlParams.get('id');
 
 	import { boards } from '../../lib/store/index.js';
-	import logo from '$lib/icons/keyboard_backspace.svg';
+	import logo from '../../lib/icons/keyboard_backspace.svg';
 	import plus from '$lib/icons/math-plus.svg';
 	import minus from '$lib/icons/math-minus.svg';
 	import close from '$lib/icons/close.svg';
 	import event_available from '../../lib/icons/event_available.svg';
+	import Modal from '../../components/modal/Modal.svelte';
+	import Datepickr from '../../components/flatpickr/Datepickr.svelte';
+	import Time from '../../components/timeCicker/Time.svelte';
+	import trash from '../../lib/icons/trash.svg';
 
-	// const item = $boards.filter((item) => item.id === +id)[0];
 	let item = $boards.find((item) => item.id === id);
+	console.log(item.id);
 
+	let selectedDate;
+	function handleDateSelect(date) {
+		selectedDate = date;
+	}
+	let options = {
+		altInput: true,
+		altFormat: 'F j',
+		dateFormat: 'Y-m-d'
+	};
+
+	function handleTimeChange(event) {
+		time = event.detail;
+	}
+	let modal;
+	let time = item.time;
 	let name = item.name;
 	let guests = item.guests;
 	let phone = item.phone;
 	let text = item.text;
-	let value = item.value ? item.value.toString().slice(4, 10) : '';
+	let value = item.value;
 	const onEdit = (event) => {
 		event.preventDefault();
 		boards.edit(id, {
@@ -55,11 +74,33 @@
 
 	<form class="section">
 		<div class="info">
-			<input id="name" bind:value={name} type="text" placeholder="Name" />
-			<input id="phone" bind:value={phone} type="text" placeholder="Phone" />
-			<button class="modal" type="button">
-				<img src={event_available} alt="event_available" />{value}
+			<input id="name" bind:value={name} type="text" placeholder="Name" required />
+			<input id="phone" bind:value={phone} type="text" placeholder="Phone" required />
+			<button class="modal" type="button" on:click={() => modal.show()}>
+				<img src={event_available} alt="event_available" />{new Date(value).toLocaleString(
+					'en-US',
+					{ month: 'long', day: 'numeric' }
+				)},
+				{time.hours < 10 ? `0${time.hours}` : time.hours}:{time.minutes < 10
+					? `0${time.minutes}`
+					: time.minutes}
+				{time.period}
 			</button>
+			<Modal bind:this={modal}>
+				<Datepickr style={'padding: 20px'} {options} bind:value onDateSelect={handleDateSelect} />
+				<Time
+					bind:hours={time.hours}
+					bind:minutes={time.minutes}
+					bind:period={time.period}
+					on:timeChanged={handleTimeChange}
+				/>
+				<div class="modalbtn">
+					<button class="modaldelete" type="button" on:click={() => modal.hide()}>
+						<img src={trash} alt="" />
+					</button>
+					<button class="modalsave" type="button" on:click={() => modal.hide()}>Save</button>
+				</div>
+			</Modal>
 		</div>
 		<!-- guests -->
 		<div>
@@ -82,6 +123,10 @@
 </main>
 
 <style>
+	.modalbtn {
+		display: flex;
+		gap: 10px;
+	}
 	.info {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -106,6 +151,30 @@
 		font-size: 22px;
 		color: white;
 		background-color: chocolate;
+		border: none;
+		outline: none;
+		border-radius: 15px;
+	}
+	.modalsave {
+		width: 75%;
+		margin-top: 20px;
+		height: 70px;
+		font-size: 22px;
+		color: white;
+		background-color: chocolate;
+		border: none;
+		outline: none;
+		border-radius: 15px;
+	}
+	.modaldelete {
+		width: 25%;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+			rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+		margin-top: 20px;
+		height: 70px;
+		font-size: 22px;
+		color: white;
+		background: transparent;
 		border: none;
 		outline: none;
 		border-radius: 15px;

@@ -1,28 +1,24 @@
 import { v4 as uuidv4 } from 'uuid';
 import { writable } from 'svelte/store';
 
-const _users = [
-	{
-		id: '1',
-		name: 'Planning',
-		phone: '01043879779',
-		text: 'salom',
-		guests: 6,
-		value: 'Oct 10',
-		time: {
-			hours: 3,
-			minutes: 10,
-			period: 'AM'
-		}
-	}
-];
+const _users =
+	JSON.parse(typeof localStorage !== 'undefined' ? localStorage.getItem('users') : null) || [];
 
 const createBoards = () => {
 	const boards = writable(_users);
 	const { subscribe, reset, update: _update } = boards;
 
+	const updateLocalStorage = (boards) => {
+		localStorage.setItem('users', JSON.stringify(boards));
+	};
+
 	const add = ({ name, phone, text, guests, value, time }) => {
-		_update((boards) => boards.concat({ id: uuidv4(), name, phone, text, guests, value, time }));
+		// _update((boards) => boards.concat({ id: uuidv4(), name, phone, text, guests, value, time }));
+		_update((boards) => {
+			const newBoards = boards.concat({ id: uuidv4(), name, phone, text, guests, value, time });
+			updateLocalStorage(newBoards);
+			return newBoards;
+		});
 	};
 
 	const remove = (id) => {

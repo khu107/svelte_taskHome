@@ -15,7 +15,9 @@
 	import trash from '../../lib/icons/trash.svg';
 
 	let selectedDate;
-	let value;
+
+	let value = new Date();
+
 	let options = {
 		altInput: true,
 		altFormat: 'F j',
@@ -76,10 +78,10 @@
 
 	<form class="section" on:submit={congratulate}>
 		<div class="info">
-			<input type="text" bind:value={name} placeholder="Name" />
-			<input type="text" bind:value={phone} placeholder="Phone" />
+			<input type="text" bind:value={name} placeholder="Name" required />
+			<input type="text" bind:value={phone} placeholder="Phone" required />
 			<button class="modal" type="button" on:click={() => modal.show()}>
-				<img src={event_available} alt="" />Select Date
+				<img src={event_available} alt="event_available" />Select Date
 			</button>
 			<Modal bind:this={modal}>
 				<Datepickr style={'padding: 20px'} {options} bind:value onDateSelect={handleDateSelect} />

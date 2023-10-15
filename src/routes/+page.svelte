@@ -6,7 +6,14 @@
 
 <header>
 	<a href="/addPage">+ New Reservation</a>
-	<h1>Reservation</h1>
+	<div class="length">
+		<h1>Reservation</h1>
+		<div style={`display: ${$boards.length === 0 ? 'none' : 'block'}`}>
+			<div class="lengthnum">
+				{$boards.length === 0 ? '' : $boards.length}
+			</div>
+		</div>
+	</div>
 	<div>
 		<img src={close} alt="close" />
 	</div>
@@ -18,6 +25,22 @@
 </div>
 
 <style>
+	.lengthnum {
+		background-color: chocolate;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-weight: bold;
+		border-radius: 50%;
+		color: white;
+	}
+	.length {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
 	.card {
 		display: grid;
 		padding: 10px 20px;
