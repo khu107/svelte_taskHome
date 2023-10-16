@@ -18,7 +18,6 @@
 	import trash from '../../lib/icons/trash.svg';
 
 	let item = $boards.find((item) => item.id === id);
-	console.log(item.id);
 
 	let selectedDate;
 	function handleDateSelect(date) {

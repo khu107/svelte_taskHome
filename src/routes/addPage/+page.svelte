@@ -114,12 +114,15 @@
 
 			<textarea bind:value={text} cols="30" rows="10" placeholder="Add Note..." />
 
-			<button class="saveBtn" type="submit"> Save </button>
+			<button class="saveBtn" disabled={!name || !phone} type="submit"> Save </button>
 		</div>
 	</form>
 </main>
 
 <style>
+	button:disabled {
+		background-color: rgb(242, 168, 115);
+	}
 	.modalbtn {
 		display: flex;
 		gap: 10px;

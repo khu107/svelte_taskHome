@@ -77,6 +77,7 @@
 		gap: 25px;
 	}
 	button {
+		cursor: pointer;
 		padding: 0px 10px;
 		border: none;
 		color: white;
